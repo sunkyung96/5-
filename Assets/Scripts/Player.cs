@@ -9,6 +9,9 @@ public class Player : MonoBehaviour
     public bool isTouchRight;
     public bool isTouchLeft;
 
+    public int life;
+    public int score;
+
     public float speed;
     public float maxShotDelay;
     public float curShotDelay;
@@ -16,6 +19,7 @@ public class Player : MonoBehaviour
     public GameObject bulletObjet;
 
     public GameManager manager;
+    public bool isHit;
 
     void Update()
     {
@@ -58,7 +62,7 @@ public class Player : MonoBehaviour
         curShotDelay += Time.deltaTime;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.tag == "Border")
         {
@@ -80,8 +84,23 @@ public class Player : MonoBehaviour
         }
         else if(collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "EnemyBullet")
         {
-            manager.RespawnPlayer();
+            if (isHit)
+                return;
+
+            isHit = true;
+            life--;
+            manager.UpdateLifeIcon(life);
+
+            if(life == 0)
+            {
+                manager.GameOver();
+            }
+            else
+            {
+                manager.RespawnPlayer();
+            }
             gameObject.SetActive(false);
+            Destroy(collision.gameObject);
         }
     }
 
