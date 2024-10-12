@@ -4,13 +4,25 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float speed;
     public bool isTouchTop;
     public bool isTouchBottom;
     public bool isTouchRight;
     public bool isTouchLeft;
 
+    public float speed;
+    public float maxShotDelay;
+    public float curShotDelay;
+
+    public GameObject bulletObjet;
+
     void Update()
+    {
+        Move();
+        Fire();
+        Reload();
+    }
+
+    void Move()
     {
         float h = Input.GetAxisRaw("Horizontal");
         if ((isTouchRight && h == 1) || (isTouchLeft && h == -1))
@@ -22,6 +34,26 @@ public class Player : MonoBehaviour
         Vector3 nextPos = new Vector3(h, v, 0) * speed * Time.deltaTime;
 
         transform.position = curPos + nextPos;
+    }
+
+    void Fire()
+    {
+        if (!Input.GetButton("space"))
+            return;
+
+        if(curShotDelay < maxShotDelay)
+            return;
+
+        GameObject bullet = Instantiate(bulletObjet, transform.position, transform.rotation);
+        Rigidbody2D rigid = bullet.GetComponent<Rigidbody2D>();
+        rigid.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
+
+        curShotDelay = 0;
+    }
+
+    void Reload()
+    {
+        curShotDelay += Time.deltaTime;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
