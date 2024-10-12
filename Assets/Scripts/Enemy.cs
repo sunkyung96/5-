@@ -4,18 +4,48 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    public string enemyName;
     public float speed;
     public int health;
     public Sprite[] sprites;
 
-    SpriteRenderer spriteRenderer;
-    Rigidbody2D rigid;
+    public float maxShotDelay;
+    public float curShotDelay;
 
+    public GameObject bulletObjet;
+    public GameObject player;
+
+    SpriteRenderer spriteRenderer;
     void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        rigid = GetComponent<Rigidbody2D>();
-        rigid.velocity = Vector2.down * speed;
+    }
+
+    void Update()
+    {
+        Fire();
+        Reload();
+    }
+
+    void Fire()
+    {
+        if (curShotDelay < maxShotDelay)
+            return;
+
+        if(enemyName == "E")
+        {
+            GameObject bullet = Instantiate(bulletObjet, transform.position, transform.rotation);
+            Rigidbody2D rigid = bullet.GetComponent<Rigidbody2D>();
+            Vector3 dirVec = player.transform.position - transform.position; 
+            rigid.AddForce(dirVec.normalized * 3, ForceMode2D.Impulse);
+        }
+
+        curShotDelay = 0;
+    }
+
+    void Reload()
+    {
+        curShotDelay += Time.deltaTime;
     }
 
     void OnHit(int dmg)
