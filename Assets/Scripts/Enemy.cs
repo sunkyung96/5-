@@ -66,11 +66,11 @@ public class Enemy : MonoBehaviour
 
             //#.Random Ratio Item Drop
             int ran = Random.Range(0, 10);
-            if(ran < 3)
+            if(ran < 9)
             {
                 Debug.Log("Not Item");
             }
-            else if (ran < 8)
+            else if (ran < 11)
             {
                 //Power
                 Instantiate(itemPower, transform.position, itemPower.transform.rotation);

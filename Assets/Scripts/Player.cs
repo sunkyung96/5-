@@ -67,7 +67,36 @@ public class Player : MonoBehaviour
                 rigidR.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
                 rigidL.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
                 break;
-                
+            case 3:
+                GameObject bullet1 = Instantiate(bulletObjet, transform.position + Vector3.right * 0.2f, transform.rotation);
+                GameObject bullet2 = Instantiate(bulletObjet, transform.position + Vector3.left * 0.2f, transform.rotation);
+                GameObject bulletC = Instantiate(bulletObjet, transform.position, transform.rotation);
+                Rigidbody2D rigid1 = bullet1.GetComponent<Rigidbody2D>();
+                Rigidbody2D rigid2 = bullet2.GetComponent<Rigidbody2D>();
+                Rigidbody2D rigidC = bulletC.GetComponent<Rigidbody2D>();
+                rigid1.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
+                rigid2.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
+                rigidC.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
+                break;
+            case 4:
+                GameObject bullet3 = Instantiate(bulletObjet, transform.position + Vector3.right * 0.4f, transform.rotation);
+                GameObject bullet4 = Instantiate(bulletObjet, transform.position + Vector3.right * 0.2f, transform.rotation);
+                GameObject bullet5 = Instantiate(bulletObjet, transform.position, transform.rotation);
+                GameObject bullet6 = Instantiate(bulletObjet, transform.position + Vector3.left * 0.2f, transform.rotation);
+                GameObject bullet7 = Instantiate(bulletObjet, transform.position + Vector3.left * 0.4f, transform.rotation);
+                Rigidbody2D rigid3 = bullet3.GetComponent<Rigidbody2D>();
+                Rigidbody2D rigid4 = bullet4.GetComponent<Rigidbody2D>();
+                Rigidbody2D rigid5 = bullet5.GetComponent<Rigidbody2D>();
+                Rigidbody2D rigid6 = bullet6.GetComponent<Rigidbody2D>();
+                Rigidbody2D rigid7 = bullet7.GetComponent<Rigidbody2D>();
+                rigid3.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
+                rigid4.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
+                rigid5.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
+                rigid6.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
+                rigid7.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
+                break;
+
+
         }
 
         
