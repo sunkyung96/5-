@@ -269,11 +269,14 @@ MonoBehaviour:
   isTouchLeft: 0
   life: 3
   score: 0
+  maxPower: 2
+  power: 1
   speed: 7
   maxShotDelay: 0.15
   curShotDelay: 0
   bulletObjet: {fileID: 7245655161213251833, guid: c25809dd4677f1145979203e641fcd89, type: 3}
   manager: {fileID: 1854447124}
+  isHit: 0
 --- !u!61 &128192996
 BoxCollider2D:
   m_ObjectHideFlags: 0

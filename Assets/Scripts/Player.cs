@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -11,7 +12,8 @@ public class Player : MonoBehaviour
 
     public int life;
     public int score;
-
+    public int maxPower;
+    public int power;
     public float speed;
     public float maxShotDelay;
     public float curShotDelay;
@@ -50,9 +52,25 @@ public class Player : MonoBehaviour
         if(curShotDelay < maxShotDelay)
             return;
 
-        GameObject bullet = Instantiate(bulletObjet, transform.position, transform.rotation);
-        Rigidbody2D rigid = bullet.GetComponent<Rigidbody2D>();
-        rigid.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
+        switch (power)
+        {
+            case 1:
+                GameObject bullet = Instantiate(bulletObjet, transform.position, transform.rotation);
+                Rigidbody2D rigid = bullet.GetComponent<Rigidbody2D>();
+                rigid.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
+                break;
+            case 2:
+                GameObject bulletR = Instantiate(bulletObjet, transform.position + Vector3.right * 0.1f, transform.rotation);
+                GameObject bulletL = Instantiate(bulletObjet, transform.position + Vector3.left * 0.1f , transform.rotation);
+                Rigidbody2D rigidR = bulletR.GetComponent<Rigidbody2D>();
+                Rigidbody2D rigidL = bulletL.GetComponent<Rigidbody2D>();
+                rigidR.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
+                rigidL.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
+                break;
+                
+        }
+
+        
 
         curShotDelay = 0;
     }
@@ -100,6 +118,20 @@ public class Player : MonoBehaviour
                 manager.RespawnPlayer();
             }
             gameObject.SetActive(false);
+            Destroy(collision.gameObject);
+        }
+        else if(collision.gameObject.tag == "Item")
+        {
+            Item item = collision.gameObject.GetComponent<Item>();
+            switch (item.type)
+            {
+                case "Power":
+                    if (power == maxPower)
+                        score += 100;
+                    else
+                        power++;
+                    break;
+            }
             Destroy(collision.gameObject);
         }
     }
