@@ -20,7 +20,8 @@ public class Player : MonoBehaviour
 
     public GameObject bulletObjet;
 
-    public GameManager manager;
+    public GameManager gameManager;
+    public ObjectManager objectManager;
     public bool isHit;
 
     void Update()
@@ -55,22 +56,34 @@ public class Player : MonoBehaviour
         switch (power)
         {
             case 1:
-                GameObject bullet = Instantiate(bulletObjet, transform.position, transform.rotation);
+                GameObject bullet = objectManager.MakeObj("PlayerBulletA");
+                bullet.transform.position = transform.position;
+
                 Rigidbody2D rigid = bullet.GetComponent<Rigidbody2D>();
                 rigid.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
                 break;
             case 2:
-                GameObject bulletR = Instantiate(bulletObjet, transform.position + Vector3.right * 0.1f, transform.rotation);
-                GameObject bulletL = Instantiate(bulletObjet, transform.position + Vector3.left * 0.1f , transform.rotation);
+                GameObject bulletR = objectManager.MakeObj("PlayerBulletA");
+                bulletR.transform.position = transform.position + Vector3.right * 0.1f;
+                
+                GameObject bulletL = objectManager.MakeObj("PlayerBulletA");
+                bulletL.transform.position = transform.position + Vector3.left * 0.1f;
+                
                 Rigidbody2D rigidR = bulletR.GetComponent<Rigidbody2D>();
                 Rigidbody2D rigidL = bulletL.GetComponent<Rigidbody2D>();
                 rigidR.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
                 rigidL.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
                 break;
             case 3:
-                GameObject bullet1 = Instantiate(bulletObjet, transform.position + Vector3.right * 0.2f, transform.rotation);
-                GameObject bullet2 = Instantiate(bulletObjet, transform.position + Vector3.left * 0.2f, transform.rotation);
-                GameObject bulletC = Instantiate(bulletObjet, transform.position, transform.rotation);
+                GameObject bullet1 = objectManager.MakeObj("PlayerBulletA");
+                bullet1.transform.position = transform.position + Vector3.right * 0.2f;
+
+                GameObject bullet2 = objectManager.MakeObj("PlayerBulletA");
+                bullet2.transform.position = transform.position + Vector3.left * 0.2f;
+
+                GameObject bulletC = objectManager.MakeObj("PlayerBulletA");
+                bulletC.transform.position = transform.position;
+
                 Rigidbody2D rigid1 = bullet1.GetComponent<Rigidbody2D>();
                 Rigidbody2D rigid2 = bullet2.GetComponent<Rigidbody2D>();
                 Rigidbody2D rigidC = bulletC.GetComponent<Rigidbody2D>();
@@ -79,11 +92,21 @@ public class Player : MonoBehaviour
                 rigidC.AddForce(Vector2.up * 10, ForceMode2D.Impulse);
                 break;
             case 4:
-                GameObject bullet3 = Instantiate(bulletObjet, transform.position + Vector3.right * 0.4f, transform.rotation);
-                GameObject bullet4 = Instantiate(bulletObjet, transform.position + Vector3.right * 0.2f, transform.rotation);
-                GameObject bullet5 = Instantiate(bulletObjet, transform.position, transform.rotation);
-                GameObject bullet6 = Instantiate(bulletObjet, transform.position + Vector3.left * 0.2f, transform.rotation);
-                GameObject bullet7 = Instantiate(bulletObjet, transform.position + Vector3.left * 0.4f, transform.rotation);
+                GameObject bullet3 = objectManager.MakeObj("PlayerBulletA");
+                bullet3.transform.position = transform.position + Vector3.right * 0.4f;
+
+                GameObject bullet4 = objectManager.MakeObj("PlayerBulletA");
+                bullet4.transform.position = transform.position + Vector3.right * 0.2f;
+
+                GameObject bullet5 = objectManager.MakeObj("PlayerBulletA");
+                bullet5.transform.position = transform.position;
+
+                GameObject bullet6 = objectManager.MakeObj("PlayerBulletA");
+                bullet6.transform.position = transform.position + Vector3.left * 0.2f;
+
+                GameObject bullet7 = objectManager.MakeObj("PlayerBulletA");
+                bullet7.transform.position = transform.position + Vector3.left * 0.4f;
+
                 Rigidbody2D rigid3 = bullet3.GetComponent<Rigidbody2D>();
                 Rigidbody2D rigid4 = bullet4.GetComponent<Rigidbody2D>();
                 Rigidbody2D rigid5 = bullet5.GetComponent<Rigidbody2D>();
@@ -136,18 +159,18 @@ public class Player : MonoBehaviour
 
             isHit = true;
             life--;
-            manager.UpdateLifeIcon(life);
+            gameManager.UpdateLifeIcon(life);
 
             if(life == 0)
             {
-                manager.GameOver();
+                gameManager.GameOver();
             }
             else
             {
-                manager.RespawnPlayer();
+                gameManager.RespawnPlayer();
             }
             gameObject.SetActive(false);
-            Destroy(collision.gameObject);
+            gameObject.SetActive(false);
         }
         else if(collision.gameObject.tag == "Item")
         {
@@ -161,7 +184,7 @@ public class Player : MonoBehaviour
                         power++;
                     break;
             }
-            Destroy(collision.gameObject);
+            collision.gameObject.SetActive(false);
         }
     }
 

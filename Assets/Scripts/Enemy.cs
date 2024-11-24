@@ -16,11 +16,23 @@ public class Enemy : MonoBehaviour
     public GameObject bulletObjet;
     public GameObject itemPower;
     public GameObject player;
+    public ObjectManager objectManager;
 
     SpriteRenderer spriteRenderer;
+
     void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+
+    void OnEnable()
+    {
+        switch (enemyName)
+        {
+            case "E":
+                health = 10;
+                break;
+        }
     }
 
     void Update()
@@ -36,7 +48,9 @@ public class Enemy : MonoBehaviour
 
         if(enemyName == "E")
         {
-            GameObject bullet = Instantiate(bulletObjet, transform.position, transform.rotation);
+            GameObject bullet = objectManager.MakeObj("EnemyBulletA");
+            bullet.transform.position = transform.position;
+
             Rigidbody2D rigid = bullet.GetComponent<Rigidbody2D>();
             Vector3 dirVec = player.transform.position - transform.position; 
             rigid.AddForce(dirVec.normalized * 3, ForceMode2D.Impulse);
@@ -73,10 +87,12 @@ public class Enemy : MonoBehaviour
             else if (ran < 11)
             {
                 //Power
-                Instantiate(itemPower, transform.position, itemPower.transform.rotation);
+                GameObject itemPower = objectManager.MakeObj("ItemPower");
+                itemPower.transform.position = transform.position;
             }
 
-            Destroy(gameObject);
+            gameObject.SetActive(false);
+            transform.rotation = Quaternion.identity;
         }
     }
     
@@ -88,13 +104,16 @@ public class Enemy : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "BorderBullet")
-              Destroy(gameObject);
+        {
+            gameObject.SetActive(false);
+            transform.rotation = Quaternion.identity;
+        }
         else if (collision.gameObject.tag == "PlayerBullet")
         {
             Bullet bullet = collision.gameObject.GetComponent<Bullet>();
             OnHit(bullet.dmg);
 
-            Destroy(collision.gameObject);
+            collision.gameObject.SetActive(false);
         }
             
     }
